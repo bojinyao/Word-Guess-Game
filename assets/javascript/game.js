@@ -1,16 +1,5 @@
-/**
- * Shuffles array in place. ES6 version
- * @param {Array} a items An array containing the items.
- */
-function shuffle(a) {
-    for (let i = a.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [a[i], a[j]] = [a[j], a[i]];
-    }
-    return a;
-};
-
 const WORDS = ["airplane", "ears", "piano"];
+const TRIES = 12;
 
 var Game = {
 
@@ -18,11 +7,11 @@ var Game = {
     alreadyGuessed : [],
     wins : 0,
     losses : 0,
-    guessesRemaining : 12,
+    guessesRemaining : TRIES,
     soFar : [],
     
     answer : "",
-    gameOver : false,
+    over : false,
 
     /**
      * Give a new word after each game.
@@ -43,6 +32,7 @@ var Game = {
     initialize : function(answer) {
         this.alreadyGuessed = [];
         this.soFar = [];
+        this.guessesRemaining = TRIES;
         for (let i = 0; i < answer.length; i++) {
             this.soFar.push("_");
         }
@@ -115,20 +105,33 @@ var Game = {
     },
 }
 
+/**
+ * Shuffles array in place. ES6 version
+ * @param {Array} a items An array containing the items.
+ */
+function shuffle(a) {
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+};
+
+
 var winText = document.getElementById("win-text");
 var soFarText = document.getElementById("soFar-text");
 var guessRemaining = document.getElementById("guess-remaining-text");
 var lettersGuessed = document.getElementById("letters-guessed-text");
+var gameStatus = document.getElementById("game-status");
+var refreshMessage = document.getElementById("refresh-message");
 var validify = /^[a-zA-Z]$/;
 
 Game.answer = Game.getWord();
 Game.initialize(Game.answer);
-
 soFarText.textContent = Game.presentSoFar();
-// lettersGuessed.textContent = Game.presentAlreadyGuessed();
 
 document.onkeyup = function(event) {
-    if (Game.gameOver) {
+    if (Game.over) {
         return;
     }
     var userKey = event.key;
@@ -144,14 +147,19 @@ document.onkeyup = function(event) {
     if (Game.gotWord()) {
         Game.wins += 1;
         winText.textContent = Game.wins;
+        guessRemaining.textContent = TRIES;
         Game.answer = Game.getWord();
         if (Game.answer.length == 0) {
-            Game.gameOver = true;
+            Game.over = true;
+            gameStatus.textContent = "Wow! You Beat the Game!"
+            refreshMessage.textContent = "Please refresh..."
         } else {
             Game.initialize(Game.answer);
             soFarText.textContent = Game.presentSoFar();
         }
     } else if (Game.guessesRemaining < 1){
-        Game.gameOver = true;
+        Game.over = true;
+        gameStatus.textContent = "You lose!"
+        refreshMessage.textContent = "Please refresh..."
     }
 }
