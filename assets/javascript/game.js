@@ -1,9 +1,10 @@
-const WORDS = ["airplane", "ears", "piano"];
+const WORDS = ["airplane", "ears", "piano", 
+                "awkward", "jazz", "rhythm"];
 const TRIES = 12;
 
 var Game = {
 
-    wordBank : shuffle(WORDS),
+    wordBank : shuffle(WORDS.slice()),
     alreadyGuessed : [],
     wins : 0,
     losses : 0,
@@ -57,6 +58,9 @@ var Game = {
      * @returns {String} elements of alreadyGuessed separated by commas
      */
     presentAlreadyGuessed : function() {
+        if (this.alreadyGuessed.length == 0) {
+            return "None";
+        }
         let result = "";
         for (let i = 0; i < this.alreadyGuessed.length - 1; i++) {
             result += `${this.alreadyGuessed[i]}, `;
@@ -103,6 +107,20 @@ var Game = {
     gotWord : function() {
         return this.soFar.indexOf("_") == -1;
     },
+
+    /**
+     * reset all attributes of Game.
+     */
+    reset : function() {
+        this.wordBank = shuffle(WORDS.slice());
+        this.alreadyGuessed = [];
+        this.wins = 0;
+        this.losses = 0;
+        this.guessesRemaining = TRIES;
+        this.soFar = [];
+        this.answer = "";
+        this.over = false;
+    }
 }
 
 /**
@@ -123,12 +141,12 @@ var soFarText = document.getElementById("soFar-text");
 var guessRemaining = document.getElementById("guess-remaining-text");
 var lettersGuessed = document.getElementById("letters-guessed-text");
 var gameStatus = document.getElementById("game-status");
-var refreshMessage = document.getElementById("refresh-message");
 var validify = /^[a-zA-Z]$/;
 
 Game.answer = Game.getWord();
 Game.initialize(Game.answer);
 soFarText.textContent = Game.presentSoFar();
+lettersGuessed.textContent = Game.presentAlreadyGuessed();
 
 document.onkeyup = function(event) {
     if (Game.over) {
@@ -148,11 +166,11 @@ document.onkeyup = function(event) {
         Game.wins += 1;
         winText.textContent = Game.wins;
         guessRemaining.textContent = TRIES;
+        lettersGuessed.textContent = "None";
         Game.answer = Game.getWord();
         if (Game.answer.length == 0) {
             Game.over = true;
             gameStatus.textContent = "Wow! You Beat the Game!"
-            refreshMessage.textContent = "Please refresh..."
         } else {
             Game.initialize(Game.answer);
             soFarText.textContent = Game.presentSoFar();
@@ -160,6 +178,18 @@ document.onkeyup = function(event) {
     } else if (Game.guessesRemaining < 1){
         Game.over = true;
         gameStatus.textContent = "You lose!"
-        refreshMessage.textContent = "Please refresh..."
     }
 }
+
+$(document).ready(function(){
+    $(".restart-btn").click(function() {
+        Game.reset();
+        Game.answer = Game.getWord();
+        Game.initialize(Game.answer);
+        soFarText.textContent = Game.presentSoFar();
+        lettersGuessed.textContent = Game.presentAlreadyGuessed();
+        $("#game-status").empty();
+        $("#win-text").text(Game.wins);
+        $("#guess-remaining-text").text(Game.guessesRemaining);
+    })
+})

@@ -9,41 +9,43 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
         crossorigin="anonymous">
-
+    <link href="https://fonts.googleapis.com/css?family=Eater" rel="stylesheet">
     <title>Word Guess</title>
 </head>
 
-<body>
-    <div id="game">
-        <div class="container">
-            <div class="row">
-                <h1>Word Guessing Game</h1>
-                <h1><div id="game-status"><strong></strong></div></h1>
-                <h1><div id="refresh-message"><strong></strong></div></h1>
-            </div>
-            <div class="row">
-                <h2>Wins: <span id="win-text"><strong>0</strong></span></h2>
-            </div>     
-
-            <div class="row">
-                <h2>Current Word: </h2>
-                <br>
-                <h2><div id="soFar-text"><strong>...Nothing.</strong></div></h2>
-            </div>     
-
-            <div class="row">
-                <h2>Number of Guesses Remaining: <span id="guess-remaining-text"><strong>12</strong></span></h2>
-            </div> 
-
-            <div class="row">
-                <h2>Letters Already Guessed: <span id="letters-guessed-text"><strong> </strong></span></h2>
-            </div>    
-                        
-        </div>
+<body style="font-family: 'Eater', cursive;">
+    <div class="jumbotron jumbotron-fluid py-0 my-5">
+        <img class="w-100" src="assets/images/hangman.jpg">
     </div>
 
-    <!-- Optional JavaScript -->
-    <script src="assets/javascript/game.js"></script>
+    <div class="container-fluid h1">
+        <div class="row">
+            <div class="col-11 offset-1">
+                <div class="row" id="game-status"></div>  
+                
+                <div class="row">
+                    Wins: <span id="win-text">0</span>
+                </div>     
+
+                <div class="row">Current Word: </div>
+                <div id="soFar-text"></div>
+                        
+
+                <div class="row">
+                    Number of Guesses Remaining: <span id="guess-remaining-text">12</span>
+                </div> 
+
+                <div class="row">
+                    Letters Already Guessed: <span id="letters-guessed-text"></span>
+                </div>    
+                <div class="row mt-3">
+                    <button type="button" class="btn btn-outline-dark restart-btn btn-lg">Restart</button> 
+                </div>
+            </div>
+        </div>
+    </div>
+   
+    
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
@@ -51,6 +53,9 @@
         crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
         crossorigin="anonymous"></script>
+
+    <!-- Optional JavaScript -->
+    <script src="assets/javascript/game.js"></script>
 </body>
 
 </html>
