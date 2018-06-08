@@ -1,10 +1,11 @@
-const WORDS = ["airplane", "ears", "piano", 
-                "awkward", "jazz", "rhythm"];
+const WORDS = {"airplane" : "plane-522x227.jpg", 
+                "ears" : "ears-800x495.jpg",
+                 "piano" : "piano-500x500.jpg"};
 const TRIES = 12;
 
 var Game = {
 
-    wordBank : shuffle(WORDS.slice()),
+    wordBank : shuffle(Object.keys(WORDS).slice()),
     alreadyGuessed : [],
     wins : 0,
     losses : 0,
@@ -112,7 +113,7 @@ var Game = {
      * reset all attributes of Game.
      */
     reset : function() {
-        this.wordBank = shuffle(WORDS.slice());
+        this.wordBank = shuffle(Object.keys(WORDS).slice());
         this.alreadyGuessed = [];
         this.wins = 0;
         this.losses = 0;
@@ -135,12 +136,13 @@ function shuffle(a) {
     return a;
 };
 
-
+const source = "assets/images/";
 var winText = document.getElementById("win-text");
 var soFarText = document.getElementById("soFar-text");
 var guessRemaining = document.getElementById("guess-remaining-text");
 var lettersGuessed = document.getElementById("letters-guessed-text");
 var gameStatus = document.getElementById("game-status");
+
 var validify = /^[a-zA-Z]$/;
 
 Game.answer = Game.getWord();
@@ -167,6 +169,7 @@ document.onkeyup = function(event) {
         winText.textContent = Game.wins;
         guessRemaining.textContent = TRIES;
         lettersGuessed.textContent = "None";
+        $(".picture").attr("src", source + WORDS[Game.answer]);
         Game.answer = Game.getWord();
         if (Game.answer.length == 0) {
             Game.over = true;
@@ -191,5 +194,6 @@ $(document).ready(function(){
         $("#game-status").empty();
         $("#win-text").text(Game.wins);
         $("#guess-remaining-text").text(Game.guessesRemaining);
+        $(".picture").attr("src", source + "letters-480-559.png");
     })
 })
